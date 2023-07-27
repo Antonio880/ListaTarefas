@@ -4,6 +4,7 @@ export function TaskCard ({ task, time }){
   const taskStyle = {
       'position': 'relative',
       'left': '33%',
+      'font-size': '12px',
       'padding-left': '2%',
       "height": '30px',
       'width': '30%',    
@@ -18,10 +19,16 @@ export function TaskCard ({ task, time }){
   }
   
   return (
-    <div className="task-card" style={taskStyle}>
-      <h3>{task}</h3>
-      <p>{time}</p>
-    </div>
+  <div>
+    {task ? (
+      <div className="task-card" style={taskStyle}>
+        <h5>{task}</h5>
+        <p>{time}</p>
+      </div>
+    ) : (
+      <h3>Inicio</h3>
+    )}
+  </div>
   );
 };
 
