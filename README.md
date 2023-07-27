@@ -1,7 +1,7 @@
 
 # ListaTarefas
 Projeto usando alguns aprendizados ao longo do tempo</br>
--Até o presente momento, utilizando requisição a API do GitHub, utilizando o conceito de SPA e usando FrameWork React
+-Até o presente momento, utilizando requisição a API do GitHub, utilizando o conceito de SPA e usando FrameWork React, também utilizando rotas.
 
 # Getting Started with Create React App
 
