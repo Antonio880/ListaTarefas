@@ -13,7 +13,6 @@ export default function PhotoList({ photos, setPhotosFavorites, photosFavorites 
             ? prevFavorites.filter((photo) => photo.id !== photoId)
             : [...prevFavorites, photos.find((photo) => photo.id === photoId)]
         );
-        console.log(photosFavorites);
     };
 
     return (
