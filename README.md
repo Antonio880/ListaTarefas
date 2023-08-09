@@ -1,7 +1,7 @@
 
 # ListaTarefas
 Projeto usando alguns aprendizados ao longo do tempo</br>
--Até o presente momento, utilizando requisição a API do GitHub, utilizando o conceito de SPA e usando FrameWork React, também utilizando rotas.
+-Este projeto está usando basicamente tudo que aprendi ou pelo menos a maior parte, desde hooks, routes, componentização, requisição a API do GitHub, desestruturação do React até ferramentas fora dele, como um conceito anterior ao React que é o SPA e o localStorage que dessa vez escolhi não usar requisições para que eu possa ter de tudo nos meus projetos.
 
 # Getting Started with Create React App
 
