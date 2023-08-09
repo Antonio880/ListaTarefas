@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import UserDetails from './components/listaTarefas/UserDetails';
-import Favorites from './components/catalogoFotos/components/Favorites';
-import PhotoList from './components/catalogoFotos/components/PhotoList';
-import SearchBar from './components/catalogoFotos/components/SearchBar';
+import UserDetails from '../components/listaTarefas/UserDetails';
+import Favorites from '../components/catalogoFotos/components/Favorites';
+import PhotoList from '../components/catalogoFotos/components/PhotoList';
+import SearchBar from '../components/catalogoFotos/components/SearchBar';
 import { Link, useLocation } from "react-router-dom";
 import axios from 'axios';
 
@@ -50,6 +50,7 @@ function CatalogoFotos() {
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <Link to={'/ListaTarefas'} class="nav-link" state={user}>Lista de Tarefas</Link>
                         <Link to={'/Catalogo'} class="nav-link" state={user}>Catálogo de Fotos</Link>
+                        <Link to={'/Vendas'} class="nav-link" state={user}>Mercado</Link>
                         <button onClick={() => setLoadPage(!loadPage)} class="nav-link">Favorites</button>
                         <SearchBar onSearch={handleSearch}/>
                     </ul>
@@ -66,9 +67,6 @@ function CatalogoFotos() {
         <Favorites setPhotosFavorites={setPhotosFavorites} photosFavorites={photosFavorites}/>
       </div>
     )}
-    <Link to={`/`} state={{}}>
-        <button type="button" class="btn btn-outline-secondary" style={{position: "relative", left: "45%"}}>Lista de Tarefas</button>
-    </Link>
     </div>
   );
 }

@@ -1,10 +1,12 @@
-import UserDetails from "./components/listaTarefas/UserDetails";
+import UserDetails from "../components/listaTarefas/UserDetails";
 import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom"
+import { useUserContext } from "../components/mercado/ContextUser";
 export default function Home(){
     const location = useLocation();
     const user = location.state;
-
+    const { setUser } = useUserContext();
+    setUser(user);
     return(
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
             <div class="container-fluid">
@@ -16,6 +18,7 @@ export default function Home(){
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <Link to={'/ListaTarefas'} class="nav-link" state={user}>Lista de Tarefas</Link>
                         <Link to={'/Catalogo'} class="nav-link" state={user}>Catálogo de Fotos</Link>
+                        <Link to={'/Vendas'} class="nav-link" state={user}>Mercado</Link>
                     </ul>
                     <UserDetails username={user.login} avatarUrl={user.avatar_url}/>
                 </div>

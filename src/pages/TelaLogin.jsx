@@ -1,4 +1,4 @@
-import LoginForm from './components/listaTarefas/LoginForm';
+import LoginForm from '../components/listaTarefas/LoginForm';
 import React from 'react';
 
 export default function TelaLogin() {

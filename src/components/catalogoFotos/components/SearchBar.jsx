@@ -10,7 +10,7 @@ const SearchBar = ({ onSearch }) => {
   return (
     <div>
         <nav class="navbar bg-body-tertiary">
-            <div class="container-fluid" style={{ display: 'flex' }}>
+            <div class="container-fluid" style={{ display: 'inline' }}>
                 <input class="form-control me-2" type="search" placeholder="Search" style={{ marginRight: '10px' }} aria-label="Search" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}/>
                 <button class="btn btn-outline-success"onClick={handleSearch}>Search</button>
             </div>

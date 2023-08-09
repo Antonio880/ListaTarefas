@@ -1,9 +1,10 @@
 import { Route, Routes } from 'react-router-dom';
-import ListaTarefas from "./ListaTarefas";
-import CatalogoFotos from "./CatalogoFotos";
-import TelaLogin from "./TelaLogin";
-import Home from './Home';
+import ListaTarefas from "./pages/ListaTarefas";
+import CatalogoFotos from "./pages/CatalogoFotos";
+import TelaLogin from "./pages/TelaLogin";
+import Home from './pages/Home';
 import Detail from './components/catalogoFotos/components/Detail';
+import Vendas from './pages/Vendas';
 export default function App(){
     return(
         <Routes>
@@ -13,6 +14,17 @@ export default function App(){
           <Route path="/ListaTarefas" exact element={ <ListaTarefas /> } />
           <Route path="/Catalogo" exact element={ <CatalogoFotos /> } />
           <Route path="/Catalogo/photo/:id" exact element={ <Detail /> } />
+          <Route path="/Vendas" exact element={ <Vendas /> } />
         </Routes>
     );
 }
+
+/*import { Outlet } from "react-router-dom";
+
+function App(){
+    return(
+        //dentro desse outlet, ele renderiza o componente de determinada rota
+        <Outlet />
+    )
+}
+export default App;*/

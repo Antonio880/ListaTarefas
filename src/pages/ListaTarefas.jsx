@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import UserDetails from './components/listaTarefas/UserDetails';
-import TaskCard from './components/listaTarefas/TaskCard';
+import UserDetails from '../components/listaTarefas/UserDetails';
+import TaskCard from '../components/listaTarefas/TaskCard';
 import { Link } from "react-router-dom";
 import { useLocation } from 'react-router-dom';
-import './App.css';
+import '../App.css';
 
 function ListaTarefas() {
   const [id, setId] = useState(0);
@@ -40,6 +40,7 @@ function ListaTarefas() {
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <Link to={'/ListaTarefas'} class="nav-link" state={user}>Lista de Tarefas</Link>
                         <Link to={'/Catalogo'} class="nav-link" state={user}>Catálogo de Fotos</Link>
+                        <Link to={'/Vendas'} class="nav-link" state={user}>Mercado</Link>
                     </ul>
                     <UserDetails username={user.login} avatarUrl={user.avatar_url}/>
                 </div>
