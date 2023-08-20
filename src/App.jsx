@@ -4,6 +4,7 @@ import CatalogoFotos from "./pages/CatalogoFotos";
 import TelaLogin from "./pages/TelaLogin";
 import Home from './pages/Home';
 import Detail from './components/catalogoFotos/components/Detail';
+import DetailStore from "./components/mercado/DetailStore"
 import Vendas from './pages/Vendas';
 export default function App(){
     return(
@@ -14,6 +15,7 @@ export default function App(){
           <Route path="/ListaTarefas" exact element={ <ListaTarefas /> } />
           <Route path="/Catalogo" exact element={ <CatalogoFotos /> } />
           <Route path="/Catalogo/photo/:id" exact element={ <Detail /> } />
+          <Route path="/Vendas/product/:id" exact element={ <DetailStore /> } />
           <Route path="/Vendas" exact element={ <Vendas /> } />
         </Routes>
     );

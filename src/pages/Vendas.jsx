@@ -5,33 +5,57 @@ import { useState, useEffect } from 'react';
 import { useUserContext } from '../components/mercado/ContextUser';
 import UserDetails from '../components/listaTarefas/UserDetails';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export default function Vendas() {
 
   const [products, setProducts] = useState([]);
   const [ isClickedNewProduct, setIsClickedNewProduct ] = useState(false);
   const [ isClickedStore, setIsClickedStore ] = useState(false);
-  const { user } = useUserContext();
+  const { user, setUser } = useUserContext();
   const { register, handleSubmit, watch, formState: { errors } } = useForm();
   let id = 0;
-
+  const navigate = useNavigate();
   let productName = watch("ProductName");
   let quantify = watch("Quantify");
   let price = watch("Price");
+
+  const handleRemoveProduct = (productToRemove) => {
+    const updatedList = products.filter(product => product.id !== productToRemove.id);
+    setProducts(updatedList);
+    // Além disso, você pode atualizar o localStorage se necessário
+  };
   
   useEffect(() => {
     for (let i = 0; i < localStorage.length; i++) {
       const chave = localStorage.key(i);
       const valor = localStorage.getItem(chave);
-    
-      const objeto = JSON.parse(valor);
-      const isProduct = products.some(objetoProduct => objetoProduct.id === objeto.id);
-    
-      if (typeof objeto === "object" && objeto !== null && !isProduct) {
-        setProducts([...products, objeto])
+      try {
+        const objeto = JSON.parse(valor);
+        console.log(objeto)
+        const isProductId = products.some(objetoProduct => objetoProduct.id === objeto.id);
+        if (isProductId) {
+          const updatedProducts = products.map(produto => {
+            if (produto.id === objeto.id) {
+              return objeto; // Substituir objeto antigo pelo novo
+            }
+            return produto;
+          });
+          setProducts(updatedProducts);
+        }
+        if ( typeof objeto === "object" && objeto !== null && !isProductId) {
+          setProducts([...products, objeto])
+          const keyForDetail = `product_${objeto.id}`;
+          const productStringForDetail = JSON.stringify(objeto);
+          localStorage.setItem(keyForDetail, productStringForDetail);
+        }
+      } catch (error) {
+        // Se ocorrer um erro ao fazer o parse do JSON, ignore este valor
+        console.error("Erro ao fazer o parse do JSON:", error);
       }
+      console.log(products);
     }
-  }, [isClickedNewProduct]); // Executa apenas na montagem do componente
+  }, [isClickedNewProduct]);
 
   const estilo = {
     display: "flex",
@@ -39,10 +63,13 @@ export default function Vendas() {
   }
  
  const onSubmitForm = () => {
-    
-     id = parseInt(localStorage.getItem("id"));
+    id = parseInt(localStorage.getItem("id"));
+     if(isNaN(id) || id == null){
+      id = 0;
+     }
      setIsClickedNewProduct(!isClickedNewProduct);
      id++;
+     
      localStorage.setItem("id", id);
      const product = {
          id: id,
@@ -53,7 +80,7 @@ export default function Vendas() {
      const productString = JSON.stringify(product);
      const chaveUnica = `product_${product.id}`;
      localStorage.setItem(chaveUnica, productString);
-     console.log(chaveUnica);
+     console.log(id);
      setIsClickedStore(false);
    };
 
@@ -75,12 +102,16 @@ export default function Vendas() {
                 </div>
             </div>
         </nav>
+        <button type="button" style={{position: 'absolute', top: "2%", left:"93%"}} onClick={()=>{
+                      setUser(null);
+                      navigate("/");
+                    }} class="btn btn-danger">Logout</button>
       {!isClickedStore && 
         <div>
           <h2 style={{display: 'flex', justifyContent: 'center'}}>Tela de Vendas</h2>    
           {user && <h4 style={{display: 'flex', justifyContent: 'center'}}>Seja Bem Vindo {user.email}</h4>}
           <button style={{position: 'absolute', top: "2%", left:"85%"}} onClick={() => setIsClickedStore(true)} className="btn btn-primary">Adicionar</button>
-          <ProductList products={products} />
+          <ProductList products={products} onRemove={handleRemoveProduct} />
         </div>
       }
 

@@ -4,6 +4,8 @@ import Favorites from '../components/catalogoFotos/components/Favorites';
 import PhotoList from '../components/catalogoFotos/components/PhotoList';
 import SearchBar from '../components/catalogoFotos/components/SearchBar';
 import { Link, useLocation } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
+import { useUserContext } from '../components/mercado/ContextUser';
 import axios from 'axios';
 
 function CatalogoFotos() {
@@ -14,6 +16,8 @@ function CatalogoFotos() {
 
   const location = useLocation();
   const user = location.state;
+  const navigate = useNavigate();
+  const { setUser } = useUserContext();
 
   
   const handleSearch = (searchTerm) => {
@@ -58,6 +62,10 @@ function CatalogoFotos() {
                 </div>
             </div>
         </nav>
+        <button type="button" style={{position: 'absolute', top: "2%", left:"93%"}} onClick={()=>{
+                      setUser(null);
+                      navigate("/");
+                    }} class="btn btn-danger">Logout</button>
     {loadPage?(
       <div>
         <PhotoList photos={filteredPhotos} setPhotosFavorites={setPhotosFavorites} photosFavorites={photosFavorites}/>

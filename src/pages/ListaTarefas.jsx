@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import UserDetails from '../components/listaTarefas/UserDetails';
 import TaskCard from '../components/listaTarefas/TaskCard';
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useLocation } from 'react-router-dom';
+import { useUserContext } from '../components/mercado/ContextUser';
 import '../App.css';
 
 function ListaTarefas() {
@@ -15,6 +17,8 @@ function ListaTarefas() {
   const [newTask, setNewTask] = useState('');
   const location = useLocation();
   const user = location.state;
+  const { setUser } = useUserContext();
+  const navigate = useNavigate();
   
   const addTask = () => {
     if (newTask.trim() !== '') {
@@ -46,13 +50,17 @@ function ListaTarefas() {
                 </div>
             </div>
         </nav>
+        <button type="button" style={{position: 'absolute', top: "2%", left:"93%"}} onClick={()=>{
+                      setUser(null);
+                      navigate("/");
+                    }} class="btn btn-danger">Logout</button>
       <h3>Lista de Tarefas</h3>
         <div>
           {tasks.map((task) => (
             <TaskCard key={task.id} task={task.task} time={task.time}></TaskCard>
           ))}
           <input type="text" value={newTask} onChange={(e)=> {setNewTask(e.target.value)}}/>
-          <button onClick={addTask}>Adicionar</button>
+          <button onClick={addTask} className='buttonTask'>Adicionar</button>
         </div>
     </div>
   );

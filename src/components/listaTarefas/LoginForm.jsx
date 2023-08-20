@@ -15,17 +15,17 @@ export function LoginForm() {
   };
 
   return (
-    <form class="App" onSubmit={handleSubmit(handleLogin)}>
+    <form className="App" onSubmit={handleSubmit(handleLogin)}>
       <input
         type="text"
         placeholder="Digite seu username do GitHub"
         value={username}
         {...register("username", { required: true })}
       />
-      <button type="submit" >Buscar</button>
+      <button type="submit" className="buttonTask" >Buscar</button>
       {user && (
         <Link to="/Home" state={user} style={{ textDecoration: "none", color: "inherit" }}>
-          <button>Entrar</button>
+          <button className="buttonTask">Entrar</button>
         </Link>
       )}
     </form>
