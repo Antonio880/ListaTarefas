@@ -10,6 +10,7 @@ export default function Home(){
     const { setUser } = useUserContext();
     const navigate = useNavigate();
     setUser(user);
+
     return(
         <div>
             <nav class="navbar navbar-expand-lg bg-body-tertiary">
@@ -32,8 +33,9 @@ export default function Home(){
                         setUser(null);
                         navigate("/");
                         }} class="btn btn-danger">Logout</button>
-            <div className="animated fadeIn">
-                Teste
+            <div style={{display: "flex", justifyContent: "center", fontSize: "20px"}}>
+                Seja Bem Vindo {user.name}
+                <br />
             </div>
         </div>
     )

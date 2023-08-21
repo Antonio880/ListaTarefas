@@ -9,13 +9,15 @@ import { useNavigate } from 'react-router-dom';
 
 export default function Vendas() {
 
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState([20]);
   const [ isClickedNewProduct, setIsClickedNewProduct ] = useState(false);
   const [ isClickedStore, setIsClickedStore ] = useState(false);
   const { user, setUser } = useUserContext();
   const { register, handleSubmit, watch, formState: { errors } } = useForm();
   let id = 0;
   const navigate = useNavigate();
+
+  //Variáveis para a parte de ADD.
   let productName = watch("ProductName");
   let quantify = watch("Quantify");
   let price = watch("Price");
@@ -27,62 +29,45 @@ export default function Vendas() {
   };
   
   useEffect(() => {
-    for (let i = 0; i < localStorage.length; i++) {
-      const chave = localStorage.key(i);
-      const valor = localStorage.getItem(chave);
-      try {
-        const objeto = JSON.parse(valor);
-        console.log(objeto)
-        const isProductId = products.some(objetoProduct => objetoProduct.id === objeto.id);
-        if (isProductId) {
-          const updatedProducts = products.map(produto => {
-            if (produto.id === objeto.id) {
-              return objeto; // Substituir objeto antigo pelo novo
-            }
-            return produto;
-          });
-          setProducts(updatedProducts);
-        }
-        if ( typeof objeto === "object" && objeto !== null && !isProductId) {
-          setProducts([...products, objeto])
-          const keyForDetail = `product_${objeto.id}`;
-          const productStringForDetail = JSON.stringify(objeto);
-          localStorage.setItem(keyForDetail, productStringForDetail);
-        }
-      } catch (error) {
-        // Se ocorrer um erro ao fazer o parse do JSON, ignore este valor
-        console.error("Erro ao fazer o parse do JSON:", error);
-      }
-      console.log(products);
+    // Carregar produtos do localStorage
+    const productsFromLocalStorage = localStorage.getItem('products');
+    if (productsFromLocalStorage) {
+      const parsedProducts = JSON.parse(productsFromLocalStorage);
+      setProducts(parsedProducts);
     }
-  }, [isClickedNewProduct]);
+  }, [isClickedStore]); // Atualiza quando 'isClickedStore' muda
+ 
+  const onSubmitForm = () => {
+    id = parseInt(localStorage.getItem("id"));
+    if (isNaN(id) || id == null) {
+      id = 0;
+    }
+    setIsClickedNewProduct(!isClickedNewProduct);
+    id++;
+  
+    localStorage.setItem("id", id);
+    const product = {
+      id: id,
+      name: productName,
+      quantify: quantify,
+      unitPrice: price,
+    };
+  
+    // Adicionar o novo produto ao array de produtos
+    const updatedProducts = [...products, product];
+    setProducts(updatedProducts);
+  
+    // Atualizar o localStorage com o novo array de produtos
+    const updatedProductsJSON = JSON.stringify(updatedProducts);
+    localStorage.setItem('products', updatedProductsJSON);
+  
+    setIsClickedStore(false);
+  };
 
   const estilo = {
     display: "flex",
     justifyContent: "center" 
   }
- 
- const onSubmitForm = () => {
-    id = parseInt(localStorage.getItem("id"));
-     if(isNaN(id) || id == null){
-      id = 0;
-     }
-     setIsClickedNewProduct(!isClickedNewProduct);
-     id++;
-     
-     localStorage.setItem("id", id);
-     const product = {
-         id: id,
-         name: productName,
-         quantify: quantify,
-         unitPrice: price,
-     }
-     const productString = JSON.stringify(product);
-     const chaveUnica = `product_${product.id}`;
-     localStorage.setItem(chaveUnica, productString);
-     console.log(id);
-     setIsClickedStore(false);
-   };
 
   return (
     <div className="sales-screen" >
@@ -109,8 +94,8 @@ export default function Vendas() {
       {!isClickedStore && 
         <div>
           <h2 style={{display: 'flex', justifyContent: 'center'}}>Tela de Vendas</h2>    
-          {user && <h4 style={{display: 'flex', justifyContent: 'center'}}>Seja Bem Vindo {user.email}</h4>}
-          <button style={{position: 'absolute', top: "2%", left:"85%"}} onClick={() => setIsClickedStore(true)} className="btn btn-primary">Adicionar</button>
+          {user && <h4 style={{display: 'flex', justifyContent: 'center'}}>Seja Bem Vindo {user.name}</h4>}
+          <button style={{position: 'absolute', top: "2%", left:"84%"}} onClick={() => setIsClickedStore(true)} className="btn btn-primary">Adicionar</button>
           <ProductList products={products} onRemove={handleRemoveProduct} />
         </div>
       }
