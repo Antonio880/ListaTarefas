@@ -2,17 +2,18 @@ import React from 'react';
 import ProductList from '../components/mercado/ProductList';
 import { useForm } from 'react-hook-form';
 import { useState, useEffect } from 'react';
-import { useUserContext } from '../components/mercado/ContextUser';
+import { useUserContext, useProductsContext } from '../components/mercado/ContextUser';
 import UserDetails from '../components/listaTarefas/UserDetails';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
 export default function Vendas() {
 
-  const [products, setProducts] = useState([20]);
   const [ isClickedNewProduct, setIsClickedNewProduct ] = useState(false);
   const [ isClickedStore, setIsClickedStore ] = useState(false);
+  const [ onUpdate, setOnUpdate ] = useState(false);
   const { user, setUser } = useUserContext();
+  const { products, setProducts } = useProductsContext();
   const { register, handleSubmit, watch, formState: { errors } } = useForm();
   let id = 0;
   const navigate = useNavigate();
@@ -35,7 +36,7 @@ export default function Vendas() {
       const parsedProducts = JSON.parse(productsFromLocalStorage);
       setProducts(parsedProducts);
     }
-  }, [isClickedStore]); // Atualiza quando 'isClickedStore' muda
+  }, [isClickedStore, onUpdate]); // Atualiza quando 'isClickedStore' muda
  
   const onSubmitForm = () => {
     id = parseInt(localStorage.getItem("id"));
@@ -96,7 +97,7 @@ export default function Vendas() {
           <h2 style={{display: 'flex', justifyContent: 'center'}}>Tela de Vendas</h2>    
           {user && <h4 style={{display: 'flex', justifyContent: 'center'}}>Seja Bem Vindo {user.name}</h4>}
           <button style={{position: 'absolute', top: "2%", left:"84%"}} onClick={() => setIsClickedStore(true)} className="btn btn-primary">Adicionar</button>
-          <ProductList products={products} onRemove={handleRemoveProduct} />
+          <ProductList products={products} onRemove={handleRemoveProduct} setOnUpdate={setOnUpdate} onUpdate={onUpdate} />
         </div>
       }
 

@@ -4,15 +4,17 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
-import { UserProvider } from './components/mercado/ContextUser';
+import { UserProvider, ProductsProvider } from './components/mercado/ContextUser';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <UserProvider>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
+      <ProductsProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </ProductsProvider>
      </UserProvider> 
   </React.StrictMode>
 );

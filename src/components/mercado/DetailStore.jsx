@@ -1,13 +1,17 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
 import { useForm } from 'react-hook-form';
+import { useNavigate } from "react-router-dom";
+import { useProductsContext } from "./ContextUser";
 
 
 export default function DetailStore(){
     const location = useLocation()
     const product = location.state;
     let { name, quantify, unitPrice, id } = product;
+    const { products, setProducts } = useProductsContext();
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
+    const navigate = useNavigate();
 
     const estilo = {
         display: "flex",
@@ -31,10 +35,14 @@ export default function DetailStore(){
             const objeto = JSON.parse(valor);
             
             if (objeto.id === produtoAtualizado.id) {
-                const key = `product_${objeto.id}`;
-                localStorage.setItem(key, produtoAtualizado)
+                const updatedProducts = [...products, produtoAtualizado];
+                setProducts(updatedProducts);
+                console.log(products);
+                const updatedProductsJSON = JSON.stringify(updatedProducts);
+                localStorage.setItem('products', updatedProductsJSON);
             }
-          }
+        }
+        navigate("/Vendas");
     }
 
     return(

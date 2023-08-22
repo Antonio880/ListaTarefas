@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-export default function ProductCard({ product, onRemove }){
+export default function ProductCard({ product, onRemove, onUpdate, setOnUpdate }){
   const { name, quantify, unitPrice } = product;
 
   const productStyle = {
@@ -33,7 +33,7 @@ export default function ProductCard({ product, onRemove }){
         <p>Quantidade: {quantify}</p>
         <p>Valor Unitário: R${parseFloat(unitPrice).toFixed(2)}</p>
         <Link to={`product/${product.id}`} state={product}>
-          <button class="btn btn-secondary" style={{color:"whitesmoke"}}>
+          <button class="btn btn-secondary" style={{color:"whitesmoke"}} onClick={() => {setOnUpdate(!onUpdate)}}>
               Edit
           </button>
         </Link>
