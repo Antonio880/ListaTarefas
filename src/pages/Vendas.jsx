@@ -36,7 +36,8 @@ export default function Vendas() {
       const parsedProducts = JSON.parse(productsFromLocalStorage);
       setProducts(parsedProducts);
     }
-  }, [isClickedStore, onUpdate]); // Atualiza quando 'isClickedStore' muda
+    //console.log(products);
+  }, [isClickedStore, products]); // Atualiza quando 'isClickedStore' muda
  
   const onSubmitForm = () => {
     id = parseInt(localStorage.getItem("id"));
