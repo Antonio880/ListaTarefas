@@ -35,9 +35,10 @@ export default function DetailStore(){
             const objeto = JSON.parse(valor);
             
             if (objeto.id === produtoAtualizado.id) {
-                const updatedProducts = [...products, produtoAtualizado];
-                setProducts(updatedProducts);
-                console.log(products);
+                const updatedList = products.filter(product => product.id !== objeto.id);
+                const updatedProducts = [...updatedList, produtoAtualizado]; 
+                setProducts(updatedProducts); 
+                console.log(updatedProducts); 
                 const updatedProductsJSON = JSON.stringify(updatedProducts);
                 localStorage.setItem('products', updatedProductsJSON);
             }
@@ -88,7 +89,7 @@ export default function DetailStore(){
                 </div>
                 <div className="mb-3 row">
                     <label htmlFor="inputPassword" className="col-sm-2 col-form-label">
-                        Preço Total: {unitPrice*quantify}
+                        Preço Total: {watch("Price")*watch("Quantify")}
                     </label>
                 </div>
                 <button type="submit" className="btn btn-primary">
