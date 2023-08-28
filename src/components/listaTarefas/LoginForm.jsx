@@ -15,7 +15,7 @@ export function LoginForm() {
   };
 
   return (
-    <form className="App" onSubmit={handleSubmit(handleLogin)}>
+    <form className="App" onSubmit={handleSubmit(handleLogin)} style={{height: "200px"}} >
       <input
         type="text"
         placeholder="Digite seu username do GitHub"
