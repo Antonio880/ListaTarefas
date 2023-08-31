@@ -5,15 +5,18 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import { UserProvider, ProductsProvider } from './components/mercado/ContextUser';
+import { WeatherDataContextProvider } from './components/Tempo/ContextWeather';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <UserProvider>
       <ProductsProvider>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
+        <WeatherDataContextProvider>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </WeatherDataContextProvider>
       </ProductsProvider>
      </UserProvider> 
   </React.StrictMode>

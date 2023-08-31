@@ -6,6 +6,7 @@ import Home from './pages/Home';
 import Detail from './components/catalogoFotos/components/Detail';
 import DetailStore from "./components/mercado/DetailStore"
 import Vendas from './pages/Vendas';
+import Tempo from './pages/Tempo';
 export default function App(){
     return(
         <Routes>
@@ -17,6 +18,7 @@ export default function App(){
           <Route path="/Catalogo/photo/:id" exact element={ <Detail /> } />
           <Route path="/Vendas/product/:id" exact element={ <DetailStore /> } />
           <Route path="/Vendas" exact element={ <Vendas /> } />
+          <Route path='/Tempo' exact element={ <Tempo/> }/>
         </Routes>
     );
 }

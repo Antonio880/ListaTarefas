@@ -5,14 +5,15 @@ export default function TelaLogin() {
 
     const style = {
         "display":"flex", 
-        "justifyContent": "center"
+        "justifyContent": "center",
+        
     }
     
     return(
         <>
             <div >
                 <div style={{paddingTop: "180px", height: "700px"}}>
-                    <h1 style={style}>Login</h1>
+                    <h1 style={{fontSize: "30px", display: "flex", justifyContent: "center"}}>Login</h1>
                     <LoginForm />
                 </div>
                 <footer style={style} >
