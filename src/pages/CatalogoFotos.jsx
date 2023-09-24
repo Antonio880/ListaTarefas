@@ -14,12 +14,9 @@ function CatalogoFotos() {
   const [photosFavorites, setPhotosFavorites] = useState([]);
   const [filteredPhotos, setFilteredPhotos] = useState([]);
 
-  const location = useLocation();
-  const user = location.state;
   const navigate = useNavigate();
-  const { setUser } = useUserContext();
+  const { user, setUser } = useUserContext();
 
-  
   const handleSearch = (searchTerm) => {
     if(searchTerm === ""){
       setFilteredPhotos(photos);

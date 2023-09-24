@@ -7,6 +7,7 @@ import Detail from './components/catalogoFotos/components/Detail';
 import DetailStore from "./components/mercado/DetailStore"
 import Vendas from './pages/Vendas';
 import Tempo from './pages/Tempo';
+import "./App.css";
 export default function App(){
     return(
         <Routes>
