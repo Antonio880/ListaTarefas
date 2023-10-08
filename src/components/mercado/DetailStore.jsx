@@ -2,7 +2,7 @@ import React from "react";
 import { useLocation } from "react-router-dom";
 import { useForm } from 'react-hook-form';
 import { useNavigate } from "react-router-dom";
-import { useProductsContext } from "./ContextUser";
+import { useProductsContext } from "../Mercado/ContextProducts";
 
 
 export default function DetailStore(){

@@ -1,35 +1,93 @@
 import { Link } from "react-router-dom";
-import UserDetails from "./listaTarefas/UserDetails";
-import { useUserContext } from "./mercado/ContextUser";
+import UserDetails from "./ListaTarefas/UserDetails";
+import { useUserContext } from "./ContextUser";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import {
+  Collapse,
+  Navbar,
+  NavbarToggler,
+  NavbarBrand,
+  Nav,
+  NavItem,
+  NavLink,
+} from "reactstrap";
 
-export default function Header(  ){
+export default function Header() {
+  const [loadPage, setLoadPage] = useState(false);
+  const [collapsed, setCollapsed] = useState(true);
 
-    const navigate = useNavigate();
-    const { user, setUser } = useUserContext();
+  const toggleNavbar = () => setCollapsed(!collapsed);
 
-    return(
-        <div>
-            <nav class="navbar navbar-expand-lg bg-body-tertiary">
-                <div class="container-fluid">
-                    <Link to={'/Home'} class="nav-link" state={user}>Home</Link>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                            <Link to={'/ListaTarefas'} class="nav-link" state={user}>Lista de Tarefas</Link>
-                            <Link to={'/Catalogo'} class="nav-link" state={user}>Catálogo de Fotos</Link>
-                            <Link to={'/Vendas'} class="nav-link" state={user}>Mercado</Link>
-                        </ul>
-                        <UserDetails username={user.login} avatarUrl={user.avatar_url}/>
-                    </div>
-                </div>
-            </nav>
-            <button type="button" style={{position: 'absolute', top: "2%", left:"93%"}} onClick={()=>{
-                        setUser(null);
-                        navigate("/");
-                        }} class="btn btn-danger">Logout</button>
-        </div>
-    );
+  const navigate = useNavigate();
+  const { user, setUser } = useUserContext();
+
+  return (
+    <Navbar color="faded" light>
+      <NavbarBrand className="me-auto">
+        <Link
+          to={"/ListaTarefas"}
+          className="nav-link"
+          aria-current="page"
+          onClick={() => setLoadPage(true)}
+        >
+          Home
+        </Link>
+      </NavbarBrand>
+      <NavbarBrand className="me-8" id="Details">
+        {user?.login && (
+          <UserDetails username={user.login} avatarUrl={user.avatar_url} />
+        )}
+      </NavbarBrand>
+      <NavbarToggler onClick={toggleNavbar} className="me-2" />
+      <Collapse isOpen={!collapsed} navbar>
+        <Nav className="me-auto" navbar>
+          <NavItem>
+            <NavLink>
+              <Link
+                to={"/ListaTarefas"}
+                className="nav-link"
+                aria-current="page"
+              >
+                Lista de Tarefas
+              </Link>
+            </NavLink>
+          </NavItem>
+          <NavItem>
+            <NavLink>
+              <Link
+                aria-current="page"
+                onClick={() => navigate("/Catalogo")}
+                className="nav-link"
+              >
+                Catálogo de Fotos
+              </Link>
+            </NavLink>
+          </NavItem>
+          <NavItem>
+            <NavLink>
+              <Link
+                aria-current="page"
+                onClick={() => navigate("/Vendas")}
+                className="nav-link"
+              >
+                Vendas
+              </Link>
+            </NavLink>
+          </NavItem>
+          <NavItem>
+            <NavLink
+              onClick={() => {
+                setUser(null);
+                navigate("/");
+              }}
+              className="nav-link btn btn-danger"
+            >
+              Logout
+            </NavLink>
+          </NavItem>
+        </Nav>
+      </Collapse>
+    </Navbar>
+  );
 }

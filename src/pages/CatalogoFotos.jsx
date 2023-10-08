@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import UserDetails from '../components/listaTarefas/UserDetails';
-import Favorites from '../components/catalogoFotos/components/Favorites';
-import PhotoList from '../components/catalogoFotos/components/PhotoList';
-import SearchBar from '../components/catalogoFotos/components/SearchBar';
-import { Link, useLocation } from "react-router-dom";
-import { useNavigate } from 'react-router-dom';
-import { useUserContext } from '../components/mercado/ContextUser';
-import axios from 'axios';
+import React, { useEffect, useState } from "react";
+import Favorites from "../components/catalogoFotos/components/Favorites";
+import PhotoList from "../components/catalogoFotos/components/PhotoList";
+import SearchBar from "../components/catalogoFotos/components/SearchBar";
+import Header from "../components/Header";
+import { useNavigate } from "react-router-dom";
+import { useUserContext } from "../components/ContextUser";
+import axios from "axios";
 
 function CatalogoFotos() {
   const [photos, setPhotos] = useState([]);
@@ -15,63 +14,52 @@ function CatalogoFotos() {
   const [filteredPhotos, setFilteredPhotos] = useState([]);
 
   const navigate = useNavigate();
-  const { user, setUser } = useUserContext();
+  const { user } = useUserContext();
 
   const handleSearch = (searchTerm) => {
-    if(searchTerm === ""){
+    if (searchTerm === "") {
       setFilteredPhotos(photos);
-    }else{
+    } else {
       const filtered = photos.filter((photo) =>
-      photo.title.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    setFilteredPhotos(filtered);
+        photo.title.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      setFilteredPhotos(filtered);
     }
   };
 
   useEffect(() => {
-    axios.get('https://jsonplaceholder.typicode.com/photos')
-      .then(response => {
+    axios
+      .get("https://jsonplaceholder.typicode.com/photos")
+      .then((response) => {
         const data = response.data.slice(0, 20);
         setPhotos(data);
         setFilteredPhotos(data);
         //console.log(photos);
       })
-      .catch(error => console.log(error));
+      .catch((error) => console.log(error));
   }, []);
 
   return (
     <div>
-      <nav class="navbar navbar-expand-lg bg-body-tertiary">
-            <div class="container-fluid">
-                <Link to={'/Home'} class="nav-link" state={user}>Home</Link>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <Link to={'/ListaTarefas'} class="nav-link" state={user}>Lista de Tarefas</Link>
-                        <Link to={'/Catalogo'} class="nav-link" state={user}>Catálogo de Fotos</Link>
-                        <Link to={'/Vendas'} class="nav-link" state={user}>Mercado</Link>
-                        <button onClick={() => setLoadPage(!loadPage)} class="nav-link">Favorites</button>
-                        <SearchBar onSearch={handleSearch}/>
-                    </ul>
-                    <UserDetails username={user.login} avatarUrl={user.avatar_url}/>
-                </div>
-            </div>
-        </nav>
-        <button type="button" style={{position: 'absolute', top: "2%", left:"93%"}} onClick={()=>{
-                      setUser(null);
-                      navigate("/");
-                    }} class="btn btn-danger">Logout</button>
-    {loadPage?(
-      <div>
-        <PhotoList photos={filteredPhotos} setPhotosFavorites={setPhotosFavorites} photosFavorites={photosFavorites}/>
-      </div>
-    ):(
-      <div>
-        <Favorites setPhotosFavorites={setPhotosFavorites} photosFavorites={photosFavorites}/>
-      </div>
-    )}
+      <Header user={user} navigate={navigate} />
+      {/* <SearchBar onSearch={handleSearch}/> */}
+
+      {loadPage ? (
+        <div>
+          <PhotoList
+            photos={filteredPhotos}
+            setPhotosFavorites={setPhotosFavorites}
+            photosFavorites={photosFavorites}
+          />
+        </div>
+      ) : (
+        <div>
+          <Favorites
+            setPhotosFavorites={setPhotosFavorites}
+            photosFavorites={photosFavorites}
+          />
+        </div>
+      )}
     </div>
   );
 }

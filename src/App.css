@@ -2,7 +2,8 @@
   /*display: flex;*/
   height: 100vh;
   text-align: center;
-  margin: auto
+  margin: auto;
+  --main-color: #a04cea;
 }
 
 .App-header {
@@ -32,7 +33,7 @@
   padding: 24px 15px;
   font-weight: 700;
 
-  background: #a04cea;
+  background: var(--main-color);
   color: #FFFFFF;
   
   border-radius: 5px;
@@ -112,18 +113,56 @@ font-size: 16px;
 }
 
 @media (max-width: 540px) {
-.task-card{
-  width: 400px;
-  font-size: 14px;
+  .task-card{
+    width: 400px;
+    font-size: 14px;
+  }
+  .edit-task{
+    width: 400px;
+    font-size: 8px;
+  }
+  .edit-task input{
+    width: 240px;
+  }
+  #Details{
+    width: 270px;
+  }
 }
-.edit-task{
-  width: 400px;
-  font-size: 8px;
+
+.fab{
+  position: fixed;
+  bottom:10px;
+  right:10px;
 }
-.edit-task input{
-  width: 240px;
+
+.fab button{
+  cursor: pointer;
+  width: 48px;
+  height: 48px;
+  border-radius: 30px;
+  background-color: var(--main-color);
+  transition: filter 0.2s;
+  border: none;
+  box-shadow: 0 1px 5px rgba(0,0,0,.4);
+  font-size: 24px;
+  color: white;
 }
-#Details{
-  width: 270px;
+
+.fab button:hover{
+  filter: brightness(1.2);
 }
+
+.fab button.main{
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  border-radius: 30px;
+  background-color: #04ce77;
+  right: 0;
+  bottom: 0;
+  z-index: 20;
+}
+
+.fab button.main:before{
+  content: '✅';
 }

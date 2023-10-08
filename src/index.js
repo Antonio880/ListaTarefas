@@ -4,19 +4,17 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
-import { UserProvider, ProductsProvider } from './components/mercado/ContextUser';
-import { WeatherDataContextProvider } from './components/Tempo/ContextWeather';
+import { ProductsProvider } from './components/Mercado/ContextProducts';
+import { UserProvider } from './components/ContextUser';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   
     <UserProvider>
       <ProductsProvider>
-        <WeatherDataContextProvider>
           <BrowserRouter>
             <App />
           </BrowserRouter>
-        </WeatherDataContextProvider>
       </ProductsProvider>
      </UserProvider> 
 );

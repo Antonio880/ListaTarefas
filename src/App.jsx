@@ -1,12 +1,11 @@
 import { Route, Routes } from 'react-router-dom';
-import ListaTarefas from "./pages/ListaTarefas";
+import ListaTarefas from "./pages/ListaTarefas/ListaTarefas";
 import CatalogoFotos from "./pages/CatalogoFotos";
 import TelaLogin from "./pages/TelaLogin";
 import Home from './pages/Home';
 import Detail from './components/catalogoFotos/components/Detail';
-import DetailStore from "./components/mercado/DetailStore"
+import DetailStore from "./components/Mercado/DetailStore"
 import Vendas from './pages/Vendas';
-import Tempo from './pages/Tempo';
 import "./App.css";
 export default function App(){
     return(
@@ -19,7 +18,6 @@ export default function App(){
           <Route path="/Catalogo/photo/:id" exact element={ <Detail /> } />
           <Route path="/Vendas/product/:id" exact element={ <DetailStore /> } />
           <Route path="/Vendas" exact element={ <Vendas /> } />
-          <Route path='/Tempo' exact element={ <Tempo/> }/>
         </Routes>
     );
 }

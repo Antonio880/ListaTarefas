@@ -1,14 +1,13 @@
-import LoginForm from '../components/listaTarefas/LoginForm';
-import { useState } from 'react';
+
 import { useForm } from 'react-hook-form';
-import fetchUser from '../components/listaTarefas/Api';
-import { useUserContext } from '../components/mercado/ContextUser';
+import fetchUser from '../components/ListaTarefas/Api';
+import { useUserContext } from '../components/ContextUser';
 import { useNavigate } from 'react-router-dom';
 import React from 'react';
 
 export default function TelaLogin() {
     const { register, handleSubmit, watch } = useForm();
-    const { user, setUser } = useUserContext();
+    const { setUser } = useUserContext();
     const username = watch("username");
     const navigate = useNavigate();
 

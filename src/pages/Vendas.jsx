@@ -1,10 +1,10 @@
 import React from 'react';
-import ProductList from '../components/mercado/ProductList';
+import ProductList from '../components/Mercado/ProductList';
 import { useForm } from 'react-hook-form';
 import { useState, useEffect } from 'react';
-import { useUserContext, useProductsContext } from '../components/mercado/ContextUser';
-import UserDetails from '../components/listaTarefas/UserDetails';
-import { Link } from 'react-router-dom';
+import { useUserContext } from '../components/ContextUser'
+import { useProductsContext } from '../components/Mercado/ContextProducts';
+import Header from '../components/Header';
 import { useNavigate } from 'react-router-dom';
 
 export default function Vendas() {
@@ -72,27 +72,8 @@ export default function Vendas() {
   }
 
   return (
-    <div className="sales-screen" >
-        <nav class="navbar navbar-expand-lg bg-body-tertiary">
-            <div class="container-fluid">
-                <Link to={'/Home'} class="nav-link" state={user}>Home</Link>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <Link to={'/ListaTarefas'} class="nav-link" state={user}>Lista de Tarefas</Link>
-                        <Link to={'/Catalogo'} class="nav-link" state={user}>Catálogo de Fotos</Link>
-                        <Link to={'/Vendas'} class="nav-link" state={user}>Mercado</Link>
-                    </ul>
-                    <UserDetails username={user.login} avatarUrl={user.avatar_url}/>
-                </div>
-            </div>
-        </nav>
-        <button type="button" style={{position: 'absolute', top: "2%", left:"93%"}} onClick={()=>{
-                      setUser(null);
-                      navigate("/");
-                    }} class="btn btn-danger">Logout</button>
+    <div className="App" >
+        <Header user={user} navigate={navigate} />
       {!isClickedStore && 
         <div>
           <h2 style={{display: 'flex', justifyContent: 'center'}}>Tela de Vendas</h2>    
