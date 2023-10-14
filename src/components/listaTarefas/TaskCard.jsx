@@ -1,4 +1,3 @@
-// Em TaskCard.js
 
 import React, { useState } from 'react';
 
@@ -7,19 +6,19 @@ export function TaskCard({ task, toggleFavorite, onRemove, onEdit, onSaveEdit, i
   const [editedText, setEditedText] = useState(task.task);
 
   const handleRemoveClick = () => {
-    onRemove(task);
+    onRemove(task._id);
   };
 
   const handleFavoriteClick = () => {
-    toggleFavorite(task.id);
+    toggleFavorite(task);
   };
 
   const handleEditClick = () => {
-    onEdit(task.id);
+    onEdit(task._id);
   };
 
   const handleSaveEditClick = () => {
-    onSaveEdit(task.id, editedText);
+    onSaveEdit(task._id, editedText);
   };
 
   const handleCancelEditClick = () => {

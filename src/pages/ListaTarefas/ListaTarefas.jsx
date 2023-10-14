@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useUserContext } from "../../components/ContextUser";
 import Header from "../../components/Header";
 import Completed from "../../components/ListaTarefas/Completed";
+import axios from "axios";
 
 function ListaTarefas() {
   const [loadPage, setLoadPage] = useState(true);
@@ -12,36 +13,49 @@ function ListaTarefas() {
   const [selectedCategory, setSelectedCategory] = useState("");
   const { user } = useUserContext();
   const navigate = useNavigate();
+  const API_URL = "http://localhost:3001/tarefas";
 
-  useEffect(() => {
-    //console.log("Executando useEffect");
-    const tasksFromLocalStorage = JSON.parse(localStorage.getItem("tasks"));
-    if (tasksFromLocalStorage) {
-      setTasks(tasksFromLocalStorage);
-    } else {
-      setTasks([
-        {
-          id: 0,
-        },
-      ]);
+
+  const fetchTasks = async () => {
+    try {
+      const response = await axios.get(API_URL);
+      console.log(response);
+      if(response.data){
+        setTasks(response.data);
+      }else{
+        setTasks([
+          {
+            id: 0,
+          },
+        ]);
+      }
+    } catch (error) {
+      console.error("Erro ao buscar as tarefas: ", error);
     }
-  }, []);
+  };
 
   useEffect(() => {
-    // Atualize o localStorage sempre que as tarefas forem alteradas
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-  }, [tasks]);
-
-  const addTask = () => {
+    fetchTasks();
+  }, []);
+  
+  const addTask = async () => {
     if (newTask.trim() !== "" && selectedCategory.trim() !== "") {
-      const id = Date.now(); // Gere um ID único com base no horário atual
       const newTaskObject = {
-        id: id,
         task: newTask,
         time: new Date().toLocaleTimeString("pt-BR"),
         isCompleted: false,
         category: selectedCategory,
       };
+      await axios.post(API_URL, newTaskObject)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+      const response = await axios.get(`http://localhost:3001/tarefas/busca?task=${newTaskObject.task}`);
+      newTaskObject._id = response.data[0]._id;
+
       setTasks([...tasks, newTaskObject]);
       setNewTask("");
     }
