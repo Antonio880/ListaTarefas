@@ -1,5 +1,5 @@
 import { Route, Routes } from 'react-router-dom';
-import ListaTarefas from "./pages/ListaTarefas/ListaTarefas";
+import ListaTarefas from "./pages/ListaTarefas";
 import CatalogoFotos from "./pages/CatalogoFotos";
 import TelaLogin from "./pages/TelaLogin";
 import Home from './pages/Home';
