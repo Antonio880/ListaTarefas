@@ -93,7 +93,7 @@ function ListaTarefas() {
 
   return (
     <div className="App">
-      <Header user={user} navigate={navigate} />
+      <Header />
 
       <h3>Lista de Tarefas</h3>
       <div>

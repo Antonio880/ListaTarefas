@@ -19,13 +19,14 @@ export default function PhotoCard({ photo, isFavorite, toggleFavorite }) {
   };
 
   const handleFavoriteClick = () => {
-    toggleFavorite(photo.id);
+    console.log(photo.src);
+    toggleFavorite(photo._id);
   };
 
   return (
     <button style={styleCard}>
-      <Link to={`photo/${photo.id}`} state={photo}>
-        <img src={photo.url} alt={photo.title} style={photoStyle} />
+      <Link to={`photo/${photo._id}`} state={photo}>
+        <img src={photo.src} alt={photo.name} style={photoStyle} />
         <h3 style={{ fontSize: "15px" }}>{photo.title}</h3>
       </Link>
       {!isFavorite ? (

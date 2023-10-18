@@ -15,7 +15,7 @@ export default function Home() {
 
   return (
     <div>
-      <Header user={user} navigate={navigate} />
+      <Header />
 
       <div style={{ display: "flex", justifyContent: "center" }}>
         Seja Bem Vindo {user.name}

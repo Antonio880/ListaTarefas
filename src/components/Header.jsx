@@ -26,7 +26,7 @@ export default function Header() {
     <Navbar color="faded" light>
       <NavbarBrand className="me-auto">
         <Link
-          to={"/ListaTarefas"}
+          to={"/Home"}
           className="nav-link"
           aria-current="page"
           onClick={() => setLoadPage(true)}
@@ -57,7 +57,7 @@ export default function Header() {
             <NavLink>
               <Link
                 aria-current="page"
-                onClick={() => navigate("/Catalogo")}
+                to={"/Catalogo"}
                 className="nav-link"
               >
                 Catálogo de Fotos
@@ -68,7 +68,7 @@ export default function Header() {
             <NavLink>
               <Link
                 aria-current="page"
-                onClick={() => navigate("/Vendas")}
+                to={"/Vendas"}
                 className="nav-link"
               >
                 Vendas

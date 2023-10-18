@@ -3,8 +3,6 @@ import Favorites from "../components/catalogoFotos/components/Favorites";
 import PhotoList from "../components/catalogoFotos/components/PhotoList";
 import SearchBar from "../components/catalogoFotos/components/SearchBar";
 import Header from "../components/Header";
-import { useNavigate } from "react-router-dom";
-import { useUserContext } from "../components/ContextUser";
 import axios from "axios";
 
 function CatalogoFotos() {
@@ -12,9 +10,6 @@ function CatalogoFotos() {
   const [loadPage, setLoadPage] = useState(true);
   const [photosFavorites, setPhotosFavorites] = useState([]);
   const [filteredPhotos, setFilteredPhotos] = useState([]);
-
-  const navigate = useNavigate();
-  const { user } = useUserContext();
 
   const handleSearch = (searchTerm) => {
     if (searchTerm === "") {
@@ -27,23 +22,39 @@ function CatalogoFotos() {
     }
   };
 
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const imageData = {
+        title: file.name,
+        url: reader.result,
+        id: photos.length + 1, // Defina uma lógica para gerar IDs únicos
+      };
+      setPhotos([imageData, ...photos]);
+    };
+    if (file) {
+      reader.readAsDataURL(file);
+    }
+  };
+
   useEffect(() => {
     axios
-      .get("https://jsonplaceholder.typicode.com/photos")
+      .get("http://localhost:3001/pictures")
       .then((response) => {
-        const data = response.data.slice(0, 20);
+        const data = response.data;
         setPhotos(data);
+        console.log(data);
         setFilteredPhotos(data);
-        //console.log(photos);
       })
       .catch((error) => console.log(error));
   }, []);
 
   return (
     <div>
-      <Header user={user} navigate={navigate} />
-      {/* <SearchBar onSearch={handleSearch}/> */}
-
+      <Header />
+      <SearchBar onSearch={handleSearch} onFileUpload={handleFileChange} />
+      
       {loadPage ? (
         <div>
           <PhotoList

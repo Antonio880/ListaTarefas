@@ -1,20 +1,25 @@
 import React, { useState } from 'react';
 
-const SearchBar = ({ onSearch }) => {
+const SearchBar = ({ onSearch, onFileUpload }) => {
   const [searchTerm, setSearchTerm] = useState('');
 
   const handleSearch = () => {
     onSearch(searchTerm);
   };
 
+  const handleFileChange = (event) => {
+    onFileUpload(event);
+  };
+
   return (
     <div>
-        <nav class="navbar bg-body-tertiary">
-            <div class="container-fluid" style={{ display: 'inline' }}>
-                <input class="form-control me-2" type="search" placeholder="Search" style={{ marginRight: '10px' }} aria-label="Search" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}/>
-                <button class="btn btn-outline-success"onClick={handleSearch}>Search</button>
+        <div className="">
+            <div class="container-fluid" style={{ display: 'flex', justifyContent: "center" }}>
+                <input class="form-control me-2" type="search" placeholder="Search"style={{ width: '400px' }}  aria-label="Search" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}/>
+                <button class="btn btn-outline-success"onClick={handleSearch} >Search</button>
+                <input type="file" onChange={handleFileChange} />
             </div>
-        </nav>  
+        </div>  
     </div>
   );
 };
