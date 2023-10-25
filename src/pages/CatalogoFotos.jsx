@@ -4,9 +4,11 @@ import PhotoList from "../components/catalogoFotos/components/PhotoList";
 import SearchBar from "../components/catalogoFotos/components/SearchBar";
 import Header from "../components/Header";
 import axios from "axios";
+import api from "../config/configApi"
 
 function CatalogoFotos() {
   const [photos, setPhotos] = useState([]);
+  const [image, setImage] = useState('');
   const [loadPage, setLoadPage] = useState(true);
   const [photosFavorites, setPhotosFavorites] = useState([]);
   const [filteredPhotos, setFilteredPhotos] = useState([]);
@@ -22,20 +24,13 @@ function CatalogoFotos() {
     }
   };
 
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      const imageData = {
-        title: file.name,
-        url: reader.result,
-        id: photos.length + 1, // Defina uma lógica para gerar IDs únicos
-      };
-      setPhotos([imageData, ...photos]);
-    };
-    if (file) {
-      reader.readAsDataURL(file);
-    }
+
+  const handleFileChange = async (event) => {
+    event.preventDefault();
+    const formData = new FormData();
+    formData.append('image', event.target.files[0]);
+    console.log(formData);
+    await api.post("/upload-image", formData);
   };
 
   useEffect(() => {
@@ -54,7 +49,11 @@ function CatalogoFotos() {
     <div>
       <Header />
       <SearchBar onSearch={handleSearch} onFileUpload={handleFileChange} />
-      
+      <form onSubmit={handleFileChange}>
+        <label>Imagem: </label>
+        <input type="file" name="image"  /><br /><br />
+        <button type="submit">Salvar</button>
+      </form>
       {loadPage ? (
         <div>
           <PhotoList

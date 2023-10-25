@@ -34,7 +34,7 @@ export default function Header() {
           Home
         </Link>
       </NavbarBrand>
-      <NavbarBrand className="me-8" id="Details">
+      <NavbarBrand id="Details">
         {user?.login && (
           <UserDetails username={user.login} avatarUrl={user.avatar_url} />
         )}

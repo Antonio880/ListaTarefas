@@ -117,7 +117,7 @@ function ListaTarefas() {
                     }}
                   />
                 </div>
-                <div class="col-md-8">
+                <div class="col-md-12">
                   <select
                     class="form-select"
                     id="inputGroupSelect02"

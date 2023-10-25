@@ -1,139 +1,95 @@
 import React from 'react';
 import ProductList from '../components/Mercado/ProductList';
+import NewProductDetails from '../components/Mercado/NewProduct';
 import { useForm } from 'react-hook-form';
+import { useUserContext } from '../components/ContextUser';
 import { useState, useEffect } from 'react';
-import { useUserContext } from '../components/ContextUser'
-import { useProductsContext } from '../components/Mercado/ContextProducts';
 import Header from '../components/Header';
-import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 export default function Vendas() {
 
-  const [ isClickedNewProduct, setIsClickedNewProduct ] = useState(false);
   const [ isClickedStore, setIsClickedStore ] = useState(false);
-  const [ onUpdate, setOnUpdate ] = useState(false);
-  const { user, setUser } = useUserContext();
-  const { products, setProducts } = useProductsContext();
+  const [ products, setProducts ] = useState([]);
+  const [ userGitHub, setUserGitHub ] = useState();
+  const { user } = useUserContext();
   const { register, handleSubmit, watch, formState: { errors } } = useForm();
-  let id = 0;
-  const navigate = useNavigate();
 
-  //Variáveis para a parte de ADD.
   let productName = watch("ProductName");
-  let quantify = watch("Quantify");
-  let price = watch("Price");
+  let quantify = Number(watch("Quantify"));
+  let price = Number(watch("Price"));
 
-  const handleRemoveProduct = (productToRemove) => {
-    const updatedList = products.filter(product => product.id !== productToRemove.id);
+  const handleRemoveProduct = async (productToRemove) => {
+    const updatedList = products.filter(product => product._id !== productToRemove._id);
+    await axios.delete(`http://localhost:3001/products/${productToRemove._id}`);
     setProducts(updatedList);
-    // Além disso, você pode atualizar o localStorage se necessário
   };
-  
-  useEffect(() => {
-    // Carregar produtos do localStorage
-    const productsFromLocalStorage = localStorage.getItem('products');
-    if (productsFromLocalStorage) {
-      const parsedProducts = JSON.parse(productsFromLocalStorage);
-      setProducts(parsedProducts);
+
+  const fetchUser = async () => {
+    try{
+      const response = await axios.get(`http://localhost:3001/users/busca?githubId=${user.id}`)
+      setUserGitHub(response.data[0]);
+      //console.log(userGitHub);
+    }catch (error) {
+      console.error("Erro ao buscar as tarefas: ", error);
     }
-    //console.log(products);
-  }, [isClickedStore, products]); // Atualiza quando 'isClickedStore' muda
- 
-  const onSubmitForm = () => {
-    id = parseInt(localStorage.getItem("id"));
-    if (isNaN(id) || id == null) {
-      id = 0;
+    //setUserGitHub(user);
+  };
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.get("http://localhost:3001/products");
+      setProducts(response.data);
+    } catch (error) {
+      console.error("Erro ao buscar os produtos: ", error);
     }
-    setIsClickedNewProduct(!isClickedNewProduct);
-    id++;
+  };
+
+  useEffect( () => {
+    fetchUser().then(() => fetchData());
+  }, [])
   
-    localStorage.setItem("id", id);
-    const product = {
-      id: id,
-      name: productName,
-      quantify: quantify,
-      unitPrice: price,
-    };
-  
-    // Adicionar o novo produto ao array de produtos
-    const updatedProducts = [...products, product];
-    setProducts(updatedProducts);
-  
-    // Atualizar o localStorage com o novo array de produtos
-    const updatedProductsJSON = JSON.stringify(updatedProducts);
-    localStorage.setItem('products', updatedProductsJSON);
-  
+  const onSubmitForm = async () => {
+    try {
+      const product = {
+        name: productName,
+        quantify: quantify,
+        unitPrice: price,
+        user: userGitHub._id,
+      };
+      const response = await axios.post("http://localhost:3001/products", product);
+      if (response.status === 200) {
+        const updatedProductList = [...products, response.data[0]];
+        setProducts(updatedProductList);
+      } else {
+        // Trate o caso em que a resposta não é bem-sucedida
+      }
+      const searchId = await axios.get(
+        `http://localhost:3001/products/busca?name=${product.name}`
+      );
+      product._id = searchId.data[0]._id;
+      setProducts([...products, product]);
+    } catch (error) {
+      console.error("Erro ao cadastrar o produto: ", error);
+    }
     setIsClickedStore(false);
   };
 
-  const estilo = {
-    display: "flex",
-    justifyContent: "center" 
-  }
-
   return (
     <div className="App" >
-        <Header user={user} navigate={navigate} />
+      <Header />
       {!isClickedStore && 
         <div>
           <h2 style={{display: 'flex', justifyContent: 'center'}}>Tela de Vendas</h2>    
-          {user && <h4 style={{display: 'flex', justifyContent: 'center'}}>Seja Bem Vindo {user.name}</h4>}
-          <button style={{position: 'absolute', top: "2%", left:"84%"}} onClick={() => setIsClickedStore(true)} className="btn btn-primary">Adicionar</button>
-          <ProductList products={products} onRemove={handleRemoveProduct} setOnUpdate={setOnUpdate} onUpdate={onUpdate} />
+          <div className="fab" >
+            <div id='teste'>
+              <button className="main" onClick={() => setIsClickedStore(true)} />
+            </div>
+          </div>
+          <ProductList products={products} onRemove={handleRemoveProduct} setProducts={setProducts} />
         </div>
       }
-
-      {isClickedStore && <div>
-            <h2 style={estilo}>Detalhes do novo Produto</h2>
-            <form onSubmit={handleSubmit(onSubmitForm)}>
-                <div className="mb-3 row">
-                    <label htmlFor="inputPassword" className="col-sm-2 col-form-label">
-                        Nome do Produto
-                    </label>
-                    <div className="col-sm-10">
-                        <input
-                            type="text"
-                            className="form-control"
-                            {...register("ProductName", { required: true, minLength: 2 })}
-                        />
-                        {errors.ProductName && <span style={{color: "red", fontSize: "14px"}}>Este campo é obrigatório e deve conter pelo menos 2 caracteres.</span>}
-                    </div>
-                </div>
-                <div className="mb-3 row">
-                    <label htmlFor="inputPassword" className="col-sm-2 col-form-label">
-                        Quantidade
-                    </label>
-                    <div className="col-sm-10">
-                        <input
-                            type="number"
-                            className="form-control"
-                            {...register("Quantify")}
-                        />
-                    </div>
-                </div>
-                <div className="mb-3 row">
-                    <label htmlFor="inputPassword" className="col-sm-2 col-form-label">
-                        Preço Unitário
-                    </label>
-                    <div className="col-sm-10">
-                        <input
-                            type="number"
-                            className="form-control"
-                            {...register("Price")}
-                        />
-                    </div>
-                </div>
-                <div className="mb-3 row">
-                    <label htmlFor="inputPassword" className="col-sm-2 col-form-label">
-                        Preço Total: {price*quantify}
-                    </label>
-                </div>
-                <button type="submit" className="btn btn-primary">
-                    Cadastrar
-                </button>
-            </form>
-        </div>
-        }
+      {isClickedStore && <NewProductDetails onSubmitForm={handleSubmit(onSubmitForm)} errors={errors} register={register} price={price} quantify={quantify} />}
     </div>
   );
 };

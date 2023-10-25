@@ -129,6 +129,28 @@ font-size: 16px;
   }
 }
 
+.product-card{
+  font-size: 12px;
+  padding-left: 65px;
+  height: 50px;
+  width: 550px;  
+  background: #735bf2;
+  color: #fff;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 24px;
+}
+
+@media (max-width: 570px) {
+  .product-card{
+    width: 460px;
+    font-size: 14px;
+  }
+}
+
 .fab{
   position: fixed;
   bottom:10px;
@@ -165,4 +187,8 @@ font-size: 16px;
 
 .fab button.main:before{
   content: '✅';
+}
+
+.fab #teste button.main:before{
+  content: '+';
 }

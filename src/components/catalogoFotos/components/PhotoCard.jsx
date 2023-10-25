@@ -26,7 +26,7 @@ export default function PhotoCard({ photo, isFavorite, toggleFavorite }) {
   return (
     <button style={styleCard}>
       <Link to={`photo/${photo._id}`} state={photo}>
-        <img src={photo.src} alt={photo.name} style={photoStyle} />
+        <img src={`http://localhost:3001/uploads/${photo.src}`} alt={photo.name} style={photoStyle} />
         <h3 style={{ fontSize: "15px" }}>{photo.title}</h3>
       </Link>
       {!isFavorite ? (

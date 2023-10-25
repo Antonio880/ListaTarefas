@@ -13,8 +13,8 @@ export default function TelaLogin() {
   const API_URL = "http://localhost:3001/users";
   const handleLogin = async () => {
     try {
-      const existingUser = await axios.get(`${API_URL}/busca?username=${username}`);
       const userData = await fetchUser(username);
+      const existingUser = await axios.get(`${API_URL}/busca?githubId=${userData.id}`);
       if (existingUser.data.length === 0) {
         const newUser = {
           username: userData.login,
